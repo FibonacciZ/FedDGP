@@ -112,9 +112,13 @@ if __name__ == '__main__':
         else:
             # local client training
             for wi in range(args.wk_iters):
-                for client_idx in range(args.n_clients):
+                if a_iter <= cround:
                     algclass.client_train(
-                        client_idx, train_loaders[client_idx])
+                        client_idx, train_loaders[a_iter%args.n_clients])
+                else:
+                    for client_idx in range(args.n_clients):
+                        algclass.client_train(
+                            client_idx, train_loaders[client_idx])
 
             # server aggregation
             if args.alg == 'feddgp':
